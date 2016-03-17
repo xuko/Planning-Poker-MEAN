@@ -11,6 +11,11 @@
           <div ng-messages="vm.form.ustoryForm.name.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Ustory name is required.</p>
           </div>
+          <label class="control-label" for="name">Description</label>
+          <input name="description" type="text" ng-model="vm.ustory.description" id="description" class="form-control" placeholder="Description" required>
+          <div ng-messages="vm.form.ustoryForm.description.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Ustory description is required.</p>
+          </div>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.ustory._id ? 'Update' : 'Create'}}</button>

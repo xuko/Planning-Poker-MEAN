@@ -7,6 +7,7 @@
        data-ui-sref="ustories.view({ ustoryId: ustory._id })"
        class="list-group-item">
       <small class="list-group-item-text">
+        <p data-ng-bind="ustory.description"></p>
         Posted on
         <span data-ng-bind="ustory.created | date:'mediumDate'"></span>
         by

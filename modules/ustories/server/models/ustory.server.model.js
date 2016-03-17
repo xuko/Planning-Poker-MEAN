@@ -13,7 +13,13 @@ var UstorySchema = new Schema({
   name: {
     type: String,
     default: '',
-    required: 'Please fill Ustory name',
+    required: 'Please fill User story name',
+    trim: true
+  },
+  description: {
+    type: String,
+    default: '',
+    required: 'Please fill User story description',
     trim: true
   },
   created: {
