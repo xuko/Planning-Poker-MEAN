@@ -1,21 +1,53 @@
-<md-toolbar ng-controller="HeaderController">
+<md-toolbar scroll ng-controller="HeaderController">
         <div class="md-toolbar-tools">
-            <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleLeft()" hide-gt-md>
+            <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleLeft()" hide-gt-sm>
                 <md-icon><i class="material-icons">menu</i></md-icon>
             </md-button>
             <h2>
-          <span>Planning Poker</span>
+          <a ui-sref="home" >Planning Poker</a>
         </h2>
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="More">
-                <md-icon><i class="material-icons">more_vert</i></md-icon>
+            <md-button ui-sref="authentication.signup" ui-sref-active="active" ng-hide="authentication.user" hide-sm hide-xs>
+                Sign up
             </md-button>
+            <md-button class="md-raised" ui-sref="authentication.signin" ui-sref-active="active" ng-hide="authentication.user" hide-sm hide-xs>
+                Sign in
+            </md-button>
+
+            <md-menu md-offset="0 60" md-position-mode="target-right target" ng-show="authentication.user">
+          <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+            <img ng-src="{{authentication.user.profileImageURL}}" alt="{{authentication.user.displayName}}" class="header-profile-image" />
+          <span ng-bind="authentication.user.displayName"></span>
+            <md-icon><i class="material-icons">arrow_drop_down</i></md-icon>
+            </md-button>
+          <md-menu-content>
+            
+            <md-menu-item ui-sref-active="active">
+              <md-button ui-sref="settings.profile">
+                <md-icon><i class="material-icons">account_circle</i></md-icon>
+                  Edit Profile
+              </md-button> 
+            </md-menu-item>
+            <md-divider></md-divider>
+            <md-menu-item ui-sref-active="active">
+              <md-button href="/api/auth/signout" target="_self" class="md-warn">
+                <md-icon><i class="material-icons">exit_to_app</i></md-icon>
+                  Signout
+              </md-button> 
+            </md-menu-item>
+
+          </md-menu-content>
+        </md-menu>
+
+
         </div>
     </md-toolbar>
-<!--    
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-      <md-toolbar class="md-theme-indigo">
-        <h1 class="md-toolbar-tools">Sidenav Left</h1>
+    
+    <md-sidenav scroll class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+      <md-toolbar class="md-tall md-theme-indigo">
+        <h1 class="md-toolbar-tools md-toolbar-tools-bottom">
+          <span class="md-flex">Sidenav Left</span>
+        </h1>
       </md-toolbar>
       <md-content layout-padding ng-controller="LeftCtrl">
         <md-button ng-click="close()" class="md-primary" hide-gt-md>
@@ -27,4 +59,3 @@
         </p>
       </md-content>
     </md-sidenav>
--->
