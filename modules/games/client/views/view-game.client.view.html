@@ -1,0 +1,33 @@
+<section>
+  <div class="page-header">
+    <h1 data-ng-bind="vm.game.name"></h1>
+  
+  <span><md-button class="md-raised md-accent" ui-sref="games.play({ gameId: vm.game._id })" ui-sref-active="active">
+                Play
+            </md-button></span>
+            </div>
+  <label>Players:</label>
+  <md-chips ng-model="vm.game.players" readonly=true></md-chips>
+  <div class="pull-right"
+       data-ng-show="vm.game.isCurrentUserOwner">
+
+       <md-button class="md-icon-button md-primary" aria-label="Edit" data-ui-sref="games.edit({ gameId: vm.game._id })">
+        <md-icon><i class="material-icons">mode_edit</i></md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-primary" aria-label="Delete" data-ng-click="vm.remove()">
+        <md-icon><i class="material-icons">delete</i></md-icon>
+      </md-button>
+
+  </div>
+  <small>
+    <em class="text-muted">
+      Created on
+      <span data-ng-bind="vm.game.created | date:'mediumDate'"></span>
+      by
+      <span data-ng-if="vm.game.user"
+            data-ng-bind="vm.game.user.displayName"></span>
+      <span data-ng-if="!vm.game.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" data-ng-bind="vm.game.content"></p>
+</section>
