@@ -41,19 +41,24 @@
     }
 
     $scope.nextUstory = function(){
+      $scope.addValue();
+      $scope.unselectItems();
+      $scope.actual++;
+    }
+    $scope.finish = function(){
+      $scope.addValue();
+      $state.go('games.view', {
+          gameId: vm.game._id
+        });
+    }
+
+    $scope.addValue = function(){
       $scope.ustories[$scope.actual].values.push({
         user: user,
         value: $scope.selectedCard.display
     });
       vm.game.ustories=$scope.ustories;
       vm.game.$update();
-      if($scope.ustories[$scope.actual+1]==$scope.ustories.lenght){
-        $state.go('games.view', {
-          gameId: vm.game._id
-        });
-      }
-      $scope.unselectItems();
-      $scope.actual++;
     }
 
     init();
