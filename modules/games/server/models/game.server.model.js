@@ -28,6 +28,21 @@ var GameSchema = new Schema({
     type: [String],
     default: [],
     required: 'Add at least one player'
+  },
+  ustories: {
+    type: [{
+      name: String,
+      description: String,
+      values: [{
+        user: {
+          type: Schema.ObjectId,
+          ref: 'User'
+        },
+        value: String
+      }]
+    }],
+    default: [],
+    ref: 'Ustory'
   }
 });
 

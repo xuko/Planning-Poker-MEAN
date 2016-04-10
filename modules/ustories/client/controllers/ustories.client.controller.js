@@ -8,11 +8,12 @@
 
   UstoriesController.$inject = ['$scope', '$state', 'Authentication', 'ustoryResolve'];
 
-  function UstoriesController ($scope, $state, Authentication, ustory) {
+  function UstoriesController ($scope, $state, Authentication, ustory, game) {
     var vm = this;
 
     vm.authentication = Authentication;
     vm.ustory = ustory;
+    vm.game = game;
     vm.error = null;
     vm.form = {};
     vm.remove = remove;
@@ -35,8 +36,10 @@
       // TODO: move create/update logic to service
       if (vm.ustory._id) {
         vm.ustory.$update(successCallback, errorCallback);
+        vm.game.ustories.$update(successCallback, errorCallback);
       } else {
         vm.ustory.$save(successCallback, errorCallback);
+        vm.game.ustories.$save(successCallback, errorCallback);
       }
 
       function successCallback(res) {

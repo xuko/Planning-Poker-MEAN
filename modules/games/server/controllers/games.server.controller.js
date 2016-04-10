@@ -81,7 +81,7 @@ exports.delete = function(req, res) {
  * List of Games
  */
 exports.list = function(req, res) { 
-  Game.find().sort('-created').populate('user', 'displayName').exec(function(err, games) {
+  Game.find({'user': req.user}).sort('-created').populate('user', 'displayName').exec(function(err, games) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

@@ -8,13 +8,35 @@
             </div>
   <label>Players:</label>
   <md-chips ng-model="vm.game.players" readonly=true></md-chips>
-  <div class="pull-right"
-       data-ng-show="vm.game.isCurrentUserOwner">
 
-       <md-button class="md-icon-button md-primary" aria-label="Edit" data-ui-sref="games.edit({ gameId: vm.game._id })">
+
+  <label>User stories:</label>
+  <div layout="row" layout-padding layout-wrap layout-fill>
+  <md-whiteframe class="md-whiteframe-5dp" ng-repeat="ustory in ustories">
+          <div layout="column">
+            
+              <label>Name:</label>
+              <p data-ng-bind="ustory.name"></p>
+            
+              <label>Description:</label>
+              <p data-ng-bind="ustory.description"></p>
+            
+          </div>
+        </md-whiteframe>
+    </div>
+
+  <div class="pull-right" data-ng-show="vm.game.isCurrentUserOwner" layout="row">
+
+      <md-button class="md-icon-button md-hue-3" aria-label="Edit" data-ui-sref="games.edit({ gameId: vm.game._id })">
+        <md-tooltip md-direction="bottom">
+          Edit
+        </md-tooltip>
         <md-icon><i class="material-icons">mode_edit</i></md-icon>
       </md-button>
-      <md-button class="md-icon-button md-primary" aria-label="Delete" data-ng-click="vm.remove()">
+      <md-button class="md-icon-button md-warn" aria-label="Delete" data-ng-click="vm.remove()">
+        <md-tooltip md-direction="bottom">
+          Delete
+        </md-tooltip>
         <md-icon><i class="material-icons">delete</i></md-icon>
       </md-button>
 

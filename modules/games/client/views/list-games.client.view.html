@@ -2,20 +2,52 @@
   <div class="page-header">
     <h1>Games</h1>
   </div>
-  <div class="list-group">
-    <a data-ng-repeat="game in vm.games"
-       data-ui-sref="games.view({ gameId: game._id })"
-       class="list-group-item">
-      <small class="list-group-item-text">
+
+  <md-list>
+    <md-list-item ng-repeat="game in vm.games" class="noright">
+    <md-list-item  flex ui-sref="games.view({ gameId: game._id })" >
+    <div layout="column">
+      <h3 data-ng-bind="game.name"></h3>
+      <p>
         Posted on
         <span data-ng-bind="game.created | date:'mediumDate'"></span>
         by
         <span data-ng-if="game.user" data-ng-bind="game.user.displayName"></span>
         <span data-ng-if="!game.user">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" data-ng-bind="game.name"></h4>
-    </a>
-  </div>
+      </p>
+      </div>
+    </md-list-item>
+    <div ng-click="$event.stopPropagation()" layout="row">
+
+      <md-button class="md-icon-button md-primary" aria-label="Edit" data-ui-sref="games.play({ gameId: game._id })">
+        <md-tooltip md-direction="bottom">
+          Play
+        </md-tooltip>
+        <md-icon class="material-icons">play_arrow</md-icon>
+      </md-button>
+
+      <md-button class="md-icon-button md-hue-3" aria-label="Edit" data-ui-sref="games.edit({ gameId: game._id })">
+        <md-tooltip md-direction="bottom">
+          Edit
+        </md-tooltip>
+        <md-icon class="material-icons">mode_edit</md-icon>
+      </md-button>
+
+      <md-button class="md-icon-button md-warn" aria-label="Delete" data-ng-click="vm.remove(game, $index)">
+        <md-tooltip md-direction="bottom">
+          Delete
+        </md-tooltip>
+        <md-icon class="material-icons">delete</md-icon>
+      </md-button>
+
+    </div>
+    </md-list-item>
+
+
+  </md-list>
+
+
+
   <div class="alert alert-warning text-center" data-ng-if="vm.games.$resolved && !vm.games.length">
     No Games yet, why don't you <a data-ui-sref="games.create">create one</a>?
   </div>

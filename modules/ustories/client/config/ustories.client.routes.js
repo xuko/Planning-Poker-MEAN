@@ -20,6 +20,7 @@
         controller: 'UstoriesListController',
         controllerAs: 'vm',
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Ustories List'
         }
       })
@@ -58,6 +59,7 @@
           ustoryResolve: getUstory
         },
         data:{
+          roles: ['user', 'admin'],
           pageTitle: 'Ustory {{ articleResolve.name }}'
         }
       });

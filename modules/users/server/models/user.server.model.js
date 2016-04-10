@@ -115,7 +115,7 @@ UserSchema.pre('save', function (next) {
 /**
  * Hook a pre validate method to test the local password
  */
-UserSchema.pre('validate', function (next) {
+/*UserSchema.pre('validate', function (next) {
   if (this.provider === 'local' && this.password && this.isModified('password')) {
     var result = owasp.test(this.password);
     if (result.errors.length) {
@@ -125,7 +125,7 @@ UserSchema.pre('validate', function (next) {
   }
 
   next();
-});
+});*/
 
 /**
  * Create instance method for hashing a password

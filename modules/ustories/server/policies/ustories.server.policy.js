@@ -34,10 +34,10 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/ustories',
-      permissions: ['get']
+      permissions: []
     }, {
       resources: '/api/ustories/:ustoryId',
-      permissions: ['get']
+      permissions: []
     }]
   }]);
 };

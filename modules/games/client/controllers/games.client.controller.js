@@ -24,6 +24,29 @@
         $scope.players = [];
       }
 
+    if (vm.game._id) {
+        $scope.ustories = vm.game.ustories;
+      } else {
+        $scope.ustories = [];
+      }
+
+
+    $scope.addUstory = function () {
+      $scope.ustories.push({
+        name: $scope.ustoryname,
+        description: $scope.ustorydescription
+    });
+
+    // Clear input fields after push
+    $scope.ustoryname = "";
+    $scope.ustorydescription = "";
+    }
+
+    $scope.removeUstory = function (index) {
+      $scope.ustories.splice(index, 1);
+    }
+
+
     // Remove existing Game
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
@@ -38,6 +61,7 @@
         return false;
       }
       vm.game.players = $scope.players;
+      vm.game.ustories = $scope.ustories;
       // TODO: move create/update logic to service
       if (vm.game._id) {
         vm.game.$update(successCallback, errorCallback);

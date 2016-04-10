@@ -32,6 +32,7 @@
         controller: 'GamesListController',
         controllerAs: 'vm',
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Games List'
         }
       })
@@ -70,6 +71,7 @@
           gameResolve: getGame
         },
         data:{
+          roles: ['user', 'admin'],
           pageTitle: 'Game {{ articleResolve.name }}'
         }
       });

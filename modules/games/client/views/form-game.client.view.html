@@ -14,6 +14,62 @@
         <label>Players:</label>
         <md-chips ng-model="players"></md-chips>
         <br>
+
+        <div> <!-- data-ng-controller="UstoriesController" -->
+    <!-- your view content -->
+        <label>User stories:</label>
+        
+        <div layout="row" layout-padding layout-wrap layout-fill>
+
+        
+
+
+        <md-whiteframe class="md-whiteframe-5dp" ng-repeat="ustory in ustories">
+          <div layout="column">
+            <md-input-container>
+              <label>Name</label>
+              <input required type="text" ng-model="ustory.name">
+            </md-input-container>
+            <md-input-container>
+              <label>Description</label>
+              <textarea required type="text" ng-model="ustory.description"></textarea>
+            </md-input-container>
+          </div>
+          <div layout="row" layout-align="end center">
+            <md-button class="md-fab md-mini material-icons md-warn" aria-label="Add User Story" ng-click="removeUstory($index)">remove
+              <md-tooltip md-direction="left">
+                Remove
+              </md-tooltip>
+            </md-button>
+          </div>
+        </md-whiteframe>
+
+        <md-whiteframe class="md-whiteframe-5dp">
+          <div layout="column">
+            <md-input-container>
+              <label>Name</label>
+              <input name="ustory-name" type="text" id="ustory-name" ng-model="ustoryname">
+            </md-input-container>
+            <md-input-container>
+              <label>Description</label>
+              <textarea name="ustory-description" type="text" id="ustory-description" ng-model="ustorydescription"></textarea>
+            </md-input-container>
+          </div>
+          <div layout="row" layout-align="end center">
+            <md-button class="md-fab md-mini material-icons" aria-label="Add User Story" ng-click="addUstory()">add
+              <md-tooltip md-direction="left">
+                Add
+              </md-tooltip>
+            </md-button>
+          </div>
+        </md-whiteframe>
+
+
+        </div>
+
+        </div>
+
+
         <div>
           <md-button class="md-raised md-accent" type="submit">{{vm.game._id ? 'Update' : 'Create'}}</md-button>
         </div>
