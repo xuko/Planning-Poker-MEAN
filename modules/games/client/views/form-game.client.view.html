@@ -12,8 +12,23 @@
       </md-input-container>
       <br>
         <label>Players:</label>
-        <md-chips ng-model="players"></md-chips>
         <br>
+        
+    <md-content class="md-padding autocomplete" layout="column">
+     
+    <md-contact-chips
+        ng-model="vm.selectedPlayers"
+        md-contacts="vm.delayedQuerySearch($query)"
+        md-contact-name="username"
+        md-contact-image="profileImageURL"
+        md-contact-email="email"
+        md-require-match="true"
+        md-highlight-flags="i"
+        filter-selected="vm.filterSelected"
+        placeholder="Add Players"
+        secondary-placeholder="Add more Players">
+    </md-contact-chips>
+    </md-content>
 
         <div> <!-- data-ng-controller="UstoriesController" -->
     <!-- your view content -->
@@ -24,7 +39,7 @@
         
 
 
-        <md-whiteframe class="md-whiteframe-5dp" ng-repeat="ustory in ustories">
+        <md-whiteframe class="md-whiteframe-5dp ustory" ng-repeat="ustory in ustories">
           <div layout="column">
             <md-input-container>
               <label>Name</label>
@@ -44,7 +59,7 @@
           </div>
         </md-whiteframe>
 
-        <md-whiteframe class="md-whiteframe-5dp">
+        <md-whiteframe class="md-whiteframe-5dp ustory">
           <div layout="column">
             <md-input-container>
               <label>Name</label>

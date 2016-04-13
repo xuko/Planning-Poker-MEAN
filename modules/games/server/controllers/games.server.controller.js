@@ -103,7 +103,7 @@ exports.gameByID = function(req, res, next, id) {
     });
   }
 
-  Game.findById(id).populate('user', 'displayName').exec(function (err, game) {
+  Game.findById(id).populate('user', 'displayName').populate('players').exec(function (err, game) {
     if (err) {
       return next(err);
     } else if (!game) {

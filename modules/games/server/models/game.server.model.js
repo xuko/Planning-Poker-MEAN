@@ -24,11 +24,10 @@ var GameSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  players: {
-    type: [String],
-    default: [],
-    required: 'Add at least one player'
-  },
+  players: [{
+    type: Schema.ObjectId,
+    ref: 'User'
+  }],
   ustories: {
     type: [{
       name: String,

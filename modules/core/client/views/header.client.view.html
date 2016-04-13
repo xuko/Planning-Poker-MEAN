@@ -19,9 +19,9 @@
             </md-button>
 
             <md-menu md-offset="0 60" md-position-mode="target-right target" ng-show="authentication.user">
-          <md-button aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
-            <img ng-src="{{authentication.user.profileImageURL}}" alt="{{authentication.user.displayName}}" class="header-profile-image" />
-          <span ng-bind="authentication.user.displayName"></span>
+          <md-button aria-label="menu" ng-click="$mdOpenMenu($event)" class="tolowercase">
+            <img ng-src="{{authentication.user.profileImageURL}}" alt="{{authentication.user.username}}" class="header-profile-image" />
+          <span ng-bind="authentication.user.username"></span>
             <md-icon><i class="material-icons">arrow_drop_down</i></md-icon>
             </md-button>
           <md-menu-content>
