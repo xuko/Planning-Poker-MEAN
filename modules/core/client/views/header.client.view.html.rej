@@ -1,0 +1,24 @@
+diff a/modules/core/client/views/header.client.view.html b/modules/core/client/views/header.client.view.html	(rejected hunks)
+@@ -1,16 +1,17 @@
+ <md-toolbar scroll ng-controller="HeaderController">
+         <div class="md-toolbar-tools">
+-            <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleLeft()" hide-gt-sm>
+-                <md-icon><i class="material-icons">menu</i></md-icon>
+-            </md-button>
++            
+             <h2>
+           <a ui-sref="home" >Planning Poker</a>
+         </h2>
++            <md-button class="md-raised md-accent" ui-sref="games.create" ui-sref-active="active" ng-show="authentication.user">
++                New Game
++            </md-button>
+             <span flex></span>
+-            <md-button ui-sref="authentication.signup" ui-sref-active="active" ng-hide="authentication.user" hide-sm hide-xs>
++            <md-button ui-sref="authentication.signup" ui-sref-active="active" ng-hide="authentication.user">
+                 Sign up
+             </md-button>
+-            <md-button class="md-raised" ui-sref="authentication.signin" ui-sref-active="active" ng-hide="authentication.user" hide-sm hide-xs>
++            <md-button class="md-raised" ui-sref="authentication.signin" ui-sref-active="active" ng-hide="authentication.user">
+                 Sign in
+             </md-button>
+ 
