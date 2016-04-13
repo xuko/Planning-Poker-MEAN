@@ -85,7 +85,8 @@
         </div>
 
 
-        <div>
+        <div layout="row" layout-align="space-between center">
+          <md-button class="md-raised md-warn" ui-sref="games.list" ui-sref-active="active">Cancel</md-button>
           <md-button class="md-raised md-accent" type="submit">{{vm.game._id ? 'Update' : 'Create'}}</md-button>
         </div>
         <div ng-show="vm.error" class="text-danger">
