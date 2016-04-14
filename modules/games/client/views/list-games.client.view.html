@@ -1,0 +1,60 @@
+<section>
+    <div layout="column">
+        <div class="page-header" layout-align="space-between center" layout="row">
+            <h1>Games</h1>
+            <md-button class="md-fab material-icons" aria-label="Add Game" ui-sref="games.create" ui-sref-active="active">add
+                <md-tooltip md-direction="left">
+                    Add new game
+                </md-tooltip>
+            </md-button>
+        </div>
+        <<md-button class="md-raised|md-fab|md-mini" href="http://google.com" ng-disabled="true|false" aria-label="description" md-no-ink="true|false" md-ripple-size="full|partial|auto">content</md-button>
+            <md-list>
+
+                <md-list-item ng-repeat="game in vm.games" class="noright">
+                    <md-list-item flex ui-sref="games.view({ gameId: game._id })">
+                        <div layout="column">
+                            <h3 data-ng-bind="game.name"></h3>
+                            <p>
+                                Created on
+                                <span data-ng-bind="game.created | date:'mediumDate'"></span> by
+                                <span data-ng-if="game.user" data-ng-bind="game.user.displayName"></span>
+                                <span data-ng-if="!game.user">Deleted User</span>
+                            </p>
+                        </div>
+                    </md-list-item>
+                    <div ng-click="$event.stopPropagation()" layout="row">
+
+                        <md-button class="md-icon-button md-primary" aria-label="Play" data-ui-sref="games.play({ gameId: game._id })">
+                            <md-tooltip md-direction="bottom">
+                                Play
+                            </md-tooltip>
+                            <md-icon class="material-icons">play_arrow</md-icon>
+                        </md-button>
+
+                        <md-button class="md-icon-button md-hue-3" aria-label="Edit" ng-show="game.user._id==vm.authentication.user._id" data-ui-sref="games.edit({ gameId: game._id })">
+                            <md-tooltip md-direction="bottom">
+                                Edit
+                            </md-tooltip>
+                            <md-icon class="material-icons">mode_edit</md-icon>
+                        </md-button>
+
+                        <md-button class="md-icon-button md-warn" aria-label="Delete" ng-show="game.user._id==vm.authentication.user._id" data-ng-click="vm.remove(game, $index)">
+                            <md-tooltip md-direction="bottom">
+                                Delete
+                            </md-tooltip>
+                            <md-icon class="material-icons">delete</md-icon>
+                        </md-button>
+
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+
+
+            </md-list>
+
+    </div>
+    <div class="alert alert-warning text-center" data-ng-if="vm.games.$resolved && !vm.games.length">
+        No Games yet, why don't you <a data-ui-sref="games.create">create one</a>?
+    </div>
+</section>

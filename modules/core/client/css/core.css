@@ -39,3 +39,7 @@ a:hover .header-profile-image {
   position:fixed;
   top:0;
 }
+
+.tolowercase {
+    text-transform: lowercase;
+}

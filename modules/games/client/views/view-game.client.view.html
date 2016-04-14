@@ -1,0 +1,69 @@
+<section>
+    <div class="page-header" layout="row" layout-align="space-between center">
+        <h1 data-ng-bind="vm.game.name" style="display: inline;"></h1>
+        <span><md-button class="md-raised md-accent" ui-sref="games.play({ gameId: vm.game._id })" ui-sref-active="active">
+                <md-icon class="material-icons">play_arrow</md-icon> Play
+            </md-button></span>
+
+
+    </div>
+    <small>
+    <em class="text-muted">
+      Created on
+      <span data-ng-bind="vm.game.created | date:'mediumDate'"></span>
+      by
+      <span data-ng-if="vm.game.user"
+            data-ng-bind="vm.game.user.displayName"></span>
+      <span data-ng-if="!vm.game.user">Deleted User</span>
+    </em>
+  </small>
+    <div layout="column">
+        <md-list class="fixedRows">
+            <md-subheader class="md-no-sticky">Players</md-subheader>
+            <md-list-item class="md-2-line contact-item" ng-repeat="(index, contact) in vm.game.players">
+                <img ng-src="{{contact.profileImageURL}}" class="md-avatar" alt="{{contact.username}}" />
+                <div class="md-list-item-text compact">
+                    <h3>{{contact.displayName}}</h3>
+                    <p>{{contact.email}}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+
+
+        <label>User stories:</label>
+        <div layout="row" layout-padding layout-wrap layout-fill>
+            <md-whiteframe class="md-whiteframe-5dp ustory" ng-repeat="ustory in ustories">
+                <div layout="column">
+
+                    <label>Name:</label>
+                    <p data-ng-bind="ustory.name"></p>
+
+                    <label>Description:</label>
+                    <p data-ng-bind="ustory.description"></p>
+
+                    <label>Score:</label>
+                    <p data-ng-bind="ustory.score"></p>
+
+                </div>
+            </md-whiteframe>
+        </div>
+    </div>
+    <div class="pull-right" data-ng-show="vm.game.isCurrentUserOwner" layout="row">
+
+        <md-button class="md-icon-button md-hue-3" aria-label="Edit" data-ui-sref="games.edit({ gameId: vm.game._id })">
+            <md-tooltip md-direction="bottom">
+                Edit
+            </md-tooltip>
+            <md-icon><i class="material-icons">mode_edit</i></md-icon>
+        </md-button>
+        <md-button class="md-icon-button md-warn" aria-label="Delete" data-ng-click="vm.remove()">
+            <md-tooltip md-direction="bottom">
+                Delete
+            </md-tooltip>
+            <md-icon><i class="material-icons">delete</i></md-icon>
+        </md-button>
+
+    </div>
+
+    <p class="lead" data-ng-bind="vm.game.content"></p>
+</section>
