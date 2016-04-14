@@ -28,6 +28,10 @@ var GameSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     }],
+    playersIn: [{
+        type: Schema.ObjectId,
+        ref: 'User'
+    }],
     ustories: {
         type: [{
             name: String,

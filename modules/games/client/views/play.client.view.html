@@ -18,6 +18,6 @@
           <md-button class="md-raised md-accent" ng-hide="ustories[actual+1]==ustories.lenght" ng-disabled="!selectedCard" ng-click="nextUstory()">Next</md-button>
           <md-button class="md-raised md-accent" ng-show="ustories[actual+1]==ustories.lenght" ng-disabled="!selectedCard" ng-click="finish()" ui-sref="games.view({ gameId: vm.game._id })">Finish</md-button>
         </div>
-
+<p data-ng-bind="vm.game.playersIn"></p>
 
 </section>

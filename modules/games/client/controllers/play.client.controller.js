@@ -10,6 +10,7 @@
     function PlayController($scope, $state, Authentication, game) {
         var vm = this;
         vm.game = game;
+        vm.game.playersIn = game.playersIn;
         $scope.ustories = vm.game.ustories;
         $scope.cards = [{
             "id": 0,
@@ -99,15 +100,10 @@
         $scope.finish = function() {
             $scope.addValue();
             var v = 0;
-            for (var i = $scope.ustories.length - 1; i >= 0; i--) {
-                for (var j = $scope.ustories[i].values.length - 1; j >= 0; j--) {
-                    v += parseInt($scope.ustories[i].values[j].value);
-                }
-                $scope.ustories[i].score = v / $scope.ustories[i].values.length;
-                v = 0;
-            }
+
 
             vm.game.ustories = $scope.ustories;
+            vm.game.playersIn = [];
             vm.game.$update();
             $state.go('games.view', {
                 gameId: vm.game._id
@@ -123,13 +119,27 @@
             vm.game.$update();
         }
 
+        $scope.allPlayers = function() {
+          return vm.game.playersIn == vm.game.players;
+        }
+
         init();
 
         function init() {
+          if (contains(vm.game.playersIn, Authentication.user._id)) {
+            vm.game.playersIn.push(Authentication.user._id);
+            vm.game.$update();
+          }
 
-            for (var i = 0; i < $scope.ustories.length; i++) {
-                $scope.ustories[i].values = [];
+            
+        }
+        function contains(array, element) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] == element) {
+                    return false;
+                }
             }
+            return true;
         }
     }
 })();

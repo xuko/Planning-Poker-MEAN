@@ -28,6 +28,18 @@
         vm.numberChips2 = [];
         vm.numberBuffer = '';
         vm.transformChip = transformChip;
+
+
+        var v = 0;
+        for (var i = vm.game.ustories.length - 1; i >= 0; i--) {
+            for (var j = vm.game.ustories[i].values.length - 1; j >= 0; j--) {
+                v += parseInt(vm.game.ustories[i].values[j].value);
+            }
+            vm.game.ustories[i].score = v / vm.game.ustories[i].values.length;
+            v = 0;
+        }
+
+
         /**
          * Return the proper object when the append is called.
          */
@@ -150,6 +162,15 @@
                 contact._lowername = contact.name.toLowerCase();
                 return contact;
             });
+        }
+
+        function play() {
+          for (var i = 0; i < $scope.ustories.length; i++) {
+              $scope.ustories[i].values = [];
+          }
+          $state.go('games.play', {
+              gameId: vm.game._id
+          });
         }
 
 
