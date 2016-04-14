@@ -25,8 +25,12 @@ var ApplicationConfiguration = (function () {
 'use strict';
 
 //Start by defining the main module and adding the module dependencies
-angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies);
-
+angular.module(ApplicationConfiguration.applicationModuleName, ApplicationConfiguration.applicationModuleVendorDependencies)
+.config(["$mdThemingProvider", function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('indigo')
+    .accentPalette('orange');
+}]);
 // Setting HTML5 Location Mode
 angular.module(ApplicationConfiguration.applicationModuleName).config(['$locationProvider', '$httpProvider',
   function ($locationProvider, $httpProvider) {
@@ -110,10 +114,10 @@ ApplicationConfiguration.registerModule('core');
 ApplicationConfiguration.registerModule('core.admin', ['core']);
 ApplicationConfiguration.registerModule('core.admin.routes', ['ui.router']);
 
-(function (app) {
-  'use strict';
+(function(app) {
+    'use strict';
 
-  app.registerModule('games');
+    app.registerModule('games');
 })(ApplicationConfiguration);
 
 'use strict';
@@ -715,186 +719,389 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
   }
 })();
 
-(function () {
-  'use strict';
+(function() {
+    'use strict';
 
-  // Games controller
-  angular
-    .module('games')
-    .controller('GamesController', GamesController);
+    // Games controller
+    angular
+        .module('games')
+        .controller('GamesController', GamesController);
 
-  GamesController.$inject = ['$scope', '$state', 'Authentication', 'gameResolve'];
+    GamesController.$inject = ['$scope', '$state', '$q', '$timeout', 'Authentication', 'gameResolve', 'Users'];
 
-  function GamesController ($scope, $state, Authentication, game) {
-    var vm = this;
+    function GamesController($scope, $state, $q, $timeout, Authentication, game, Users) {
+        var vm = this;
 
-    vm.authentication = Authentication;
-    vm.game = game;
-    vm.error = null;
-    vm.form = {};
-    vm.remove = remove;
-    vm.save = save;
+        vm.authentication = Authentication;
+        vm.game = game;
+        vm.error = null;
+        vm.form = {};
+        vm.remove = remove;
+        vm.save = save;
 
-    if (vm.game._id) {
-        $scope.players = vm.game.players;
-      } else {
-        $scope.players = [];
-      }
+        vm.readonly = false;
+        vm.selectedItem = null;
+        vm.searchText = null;
+        vm.querySearch = querySearch;
+        vm.contacts = Users.query();
+        vm.selectedPlayers = [];
+        vm.numberChips = [];
+        vm.numberChips2 = [];
+        vm.numberBuffer = '';
+        vm.transformChip = transformChip;
+        /**
+         * Return the proper object when the append is called.
+         */
+        function transformChip(chip) {
+            // If it is an object, it's already a known chip
+            if (angular.isObject(chip)) {
+                return chip;
+            }
+            // Otherwise, create a new one
+            return {
+                username: chip,
+                email: 'new'
+            }
+        }
+        /**
+         * Search for vegetables.
+         */
+        /*    function querySearch (query) {
+              var results = query ? vm.contacts.filter(createFilterFor(query)) : [];
+              return results;
+            }*/
+        /**
+         * Create filter function for a query string
+         */
+        /*    function createFilterFor(query) {
+              var lowercaseQuery = angular.lowercase(query);
+              return function filterFn(contact) {
+                return (contact.username.indexOf(lowercaseQuery) === 0) ||
+                    (contact.email.indexOf(lowercaseQuery) === 0);
+              };
+            }*/
+        function loadContacts(usrs) {
 
-    if (vm.game._id) {
-        $scope.ustories = vm.game.ustories;
-      } else {
-        $scope.ustories = [];
-      }
+
+            return usrs.map(function(cont) {
+                cont._lowerusername = cont.username.toLowerCase();
+                cont._loweremail = cont.email.toLowerCase();
+                return cont;
+            });
+        }
 
 
-    $scope.addUstory = function () {
-      $scope.ustories.push({
-        name: $scope.ustoryname,
-        description: $scope.ustorydescription
-    });
 
-    // Clear input fields after push
-    $scope.ustoryname = "";
-    $scope.ustorydescription = "";
+        var pendingSearch, cancelSearch = angular.noop;
+        var cachedQuery, lastSearch;
+
+        vm.allContacts = Users.query();
+        vm.filterSelected = true;
+        vm.querySearch = querySearch;
+        vm.delayedQuerySearch = delayedQuerySearch;
+        /**
+         * Search for contacts; use a random delay to simulate a remote call
+         */
+        function querySearch(criteria) {
+            cachedQuery = cachedQuery || criteria;
+            return cachedQuery ? vm.allContacts.filter(createFilterFor(cachedQuery)) : [];
+        }
+        /**
+         * Async search for contacts
+         * Also debounce the queries; since the md-contact-chips does not support this
+         */
+        function delayedQuerySearch(criteria) {
+            cachedQuery = criteria;
+            if (!pendingSearch || !debounceSearch()) {
+                cancelSearch();
+                return pendingSearch = $q(function(resolve, reject) {
+                    // Simulate async search... (after debouncing)
+                    cancelSearch = reject;
+                    $timeout(function() {
+                        resolve(vm.querySearch());
+                        refreshDebounce();
+                    }, Math.random() * 500, true)
+                });
+            }
+            return pendingSearch;
+        }
+
+        function refreshDebounce() {
+            lastSearch = 0;
+            pendingSearch = null;
+            cancelSearch = angular.noop;
+        }
+        /**
+         * Debounce if querying faster than 300ms
+         */
+        function debounceSearch() {
+            var now = new Date().getMilliseconds();
+            lastSearch = lastSearch || now;
+            return ((now - lastSearch) < 300);
+        }
+        /**
+         * Create filter function for a query string
+         */
+        function createFilterFor(query) {
+            var lowercaseQuery = angular.lowercase(query);
+            return function filterFn(contact) {
+                return (contact.username.indexOf(lowercaseQuery) != -1);;
+            };
+        }
+
+        function loadContacts() {
+            var contacts = [
+                'Marina Augustine',
+                'Oddr Sarno',
+                'Nick Giannopoulos',
+                'Narayana Garner',
+                'Anita Gros',
+                'Megan Smith',
+                'Tsvetko Metzger',
+                'Hector Simek',
+                'Some-guy withalongalastaname'
+            ];
+            return contacts.map(function(c, index) {
+                var cParts = c.split(' ');
+                var contact = {
+                    name: c,
+                    email: cParts[0][0].toLowerCase() + '.' + cParts[1].toLowerCase() + '@example.com',
+                    image: 'http://lorempixel.com/50/50/people?' + index
+                };
+                contact._lowername = contact.name.toLowerCase();
+                return contact;
+            });
+        }
+
+
+
+
+
+
+
+        if (vm.game._id) {
+            vm.selectedPlayers = vm.game.players;
+        } else {
+            vm.selectedPlayers = [user];
+        }
+
+        if (vm.game._id) {
+            $scope.ustories = vm.game.ustories;
+        } else {
+            $scope.ustories = [];
+        }
+
+
+        $scope.addUstory = function() {
+            $scope.ustories.push({
+                name: $scope.ustoryname,
+                description: $scope.ustorydescription
+            });
+
+            // Clear input fields after push
+            $scope.ustoryname = "";
+            $scope.ustorydescription = "";
+        }
+
+        $scope.removeUstory = function(index) {
+            $scope.ustories.splice(index, 1);
+        }
+
+
+        // Remove existing Game
+        function remove() {
+            if (confirm('Are you sure you want to delete?')) {
+                vm.game.$remove($state.go('games.list'));
+            }
+        }
+
+        // Save Game
+        function save(isValid) {
+            if (!isValid) {
+                $scope.$broadcast('show-errors-check-validity', 'vm.form.gameForm');
+                return false;
+            }
+            vm.game.players = vm.selectedPlayers;
+            vm.game.ustories = $scope.ustories;
+            // TODO: move create/update logic to service
+            if (vm.game._id) {
+                vm.game.$update(successCallback, errorCallback);
+            } else {
+                vm.game.$save(successCallback, errorCallback);
+            }
+
+            function successCallback(res) {
+                $state.go('games.view', {
+                    gameId: res._id
+                });
+            }
+
+            function errorCallback(res) {
+                vm.error = res.data.message;
+            }
+        }
     }
-
-    $scope.removeUstory = function (index) {
-      $scope.ustories.splice(index, 1);
-    }
-
-
-    // Remove existing Game
-    function remove() {
-      if (confirm('Are you sure you want to delete?')) {
-        vm.game.$remove($state.go('games.list'));
-      }
-    }
-
-    // Save Game
-    function save(isValid) {
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.gameForm');
-        return false;
-      }
-      vm.game.players = $scope.players;
-      vm.game.ustories = $scope.ustories;
-      // TODO: move create/update logic to service
-      if (vm.game._id) {
-        vm.game.$update(successCallback, errorCallback);
-      } else {
-        vm.game.$save(successCallback, errorCallback);
-      }
-
-      function successCallback(res) {
-        $state.go('games.view', {
-          gameId: res._id
-        });
-      }
-
-      function errorCallback(res) {
-        vm.error = res.data.message;
-      }
-    }
-  }
-})();
-
-(function () {
-  'use strict';
-
-  angular
-    .module('games')
-    .controller('GamesListController', GamesListController);
-
-  GamesListController.$inject = ['GamesService'];
-
-  function GamesListController(GamesService) {
-    var vm = this;
-
-    vm.games = GamesService.query();
-    vm.remove = remove;
-
-    function remove(game, index) {
-    	if (confirm('Are you sure you want to delete?')) {
-        	game.$remove();
-        	vm.games.splice(index, 1); // UPDATE THE VIEW
-    	}	
-    }
-  }
 })();
 
 (function() {
-  'use strict';
+    'use strict';
 
-  angular
-    .module('games')
-    .controller('PlayController', PlayController);
+    angular
+        .module('games')
+        .controller('GamesListController', GamesListController);
 
-  PlayController.$inject = ['$scope', '$state', 'Authentication', 'gameResolve'];
+    GamesListController.$inject = ['Authentication', 'GamesService'];
 
-  function PlayController($scope, $state, Authentication, game) {
-    var vm = this;
-    vm.game = game;
-    $scope.ustories = vm.game.ustories;
-    $scope.cards=[{"id":0,"display":"0","selected":false},{"id":1,"display":"1/2","selected":false},{"id":2,"display":"1","selected":false},{"id":3,"display":"2","selected":false},{"id":4,"display":"3","selected":false},{"id":5,"display":"5","selected":false},{"id":6,"display":"8","selected":false},{"id":7,"display":"13","selected":false},{"id":8,"display":"20","selected":false},{"id":9,"display":"40","selected":false},{"id":10,"display":"100","selected":false},{"id":11,"display":"?","selected":false},{"id":12,"display":"∞","selected":false},];
-    $scope.actual = 0;
-    $scope.selectedCard = null;
+    function GamesListController(Authentication, GamesService) {
+        var vm = this;
+
+        vm.authentication = Authentication;
+        vm.games = GamesService.query();
+        vm.remove = remove;
+
+        function remove(game, index) {
+            if (confirm('Are you sure you want to delete?')) {
+                game.$remove();
+                vm.games.splice(index, 1); // UPDATE THE VIEW
+            }
+        }
+    }
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('games')
+        .controller('PlayController', PlayController);
+
+    PlayController.$inject = ['$scope', '$state', 'Authentication', 'gameResolve'];
+
+    function PlayController($scope, $state, Authentication, game) {
+        var vm = this;
+        vm.game = game;
+        $scope.ustories = vm.game.ustories;
+        $scope.cards = [{
+            "id": 0,
+            "display": "0",
+            "selected": false
+        }, {
+            "id": 1,
+            "display": "1/2",
+            "selected": false
+        }, {
+            "id": 2,
+            "display": "1",
+            "selected": false
+        }, {
+            "id": 3,
+            "display": "2",
+            "selected": false
+        }, {
+            "id": 4,
+            "display": "3",
+            "selected": false
+        }, {
+            "id": 5,
+            "display": "5",
+            "selected": false
+        }, {
+            "id": 6,
+            "display": "8",
+            "selected": false
+        }, {
+            "id": 7,
+            "display": "13",
+            "selected": false
+        }, {
+            "id": 8,
+            "display": "20",
+            "selected": false
+        }, {
+            "id": 9,
+            "display": "40",
+            "selected": false
+        }, {
+            "id": 10,
+            "display": "100",
+            "selected": false
+        }, {
+            "id": 11,
+            "display": "?",
+            "selected": false
+        }, {
+            "id": 12,
+            "display": "∞",
+            "selected": false
+        }, ];
+        $scope.actual = 0;
+        $scope.selectedCard = null;
 
 
-    $scope.selectItem = function(selectedItem){
-      for(var i = 0; i < $scope.cards.length; i++){
-          var item = $scope.cards[i];
-          if(item.id == selectedItem.id){
-              item.selected = !item.selected;
-              if(item.selected==true){
-                $scope.selectedCard = item;
-              }
-              else{
+        $scope.selectItem = function(selectedItem) {
+            for (var i = 0; i < $scope.cards.length; i++) {
+                var item = $scope.cards[i];
+                if (item.id == selectedItem.id) {
+                    item.selected = !item.selected;
+                    if (item.selected == true) {
+                        $scope.selectedCard = item;
+                    } else {
+                        $scope.selectedCard = null;
+                    }
+                } else {
+                    item.selected = false;
+                }
+            }
+        }
+
+        $scope.unselectItems = function() {
+            for (var i = 0; i < $scope.cards.length; i++) {
+                $scope.cards[i].selected = false;
                 $scope.selectedCard = null;
-              }
-          }else {
-              item.selected = false;
-          }
-      }
-    }
+            }
+        }
 
-    $scope.unselectItems = function(){
-      for(var i = 0; i < $scope.cards.length; i++){
-          $scope.cards[i].selected = false;
-          $scope.selectedCard = null;
-      }
-    }
+        $scope.nextUstory = function() {
+            $scope.addValue();
+            $scope.unselectItems();
+            $scope.actual++;
+        }
+        $scope.finish = function() {
+            $scope.addValue();
+            var v = 0;
+            for (var i = $scope.ustories.length - 1; i >= 0; i--) {
+                for (var j = $scope.ustories[i].values.length - 1; j >= 0; j--) {
+                    v += parseInt($scope.ustories[i].values[j].value);
+                }
+                $scope.ustories[i].score = v / $scope.ustories[i].values.length;
+                v = 0;
+            }
 
-    $scope.nextUstory = function(){
-      $scope.addValue();
-      $scope.unselectItems();
-      $scope.actual++;
-    }
-    $scope.finish = function(){
-      $scope.addValue();
-      $state.go('games.view', {
-          gameId: vm.game._id
-        });
-    }
+            vm.game.ustories = $scope.ustories;
+            vm.game.$update();
+            $state.go('games.view', {
+                gameId: vm.game._id
+            });
+        }
 
-    $scope.addValue = function(){
-      $scope.ustories[$scope.actual].values.push({
-        user: user,
-        value: $scope.selectedCard.display
-    });
-      vm.game.ustories=$scope.ustories;
-      vm.game.$update();
-    }
+        $scope.addValue = function() {
+            $scope.ustories[$scope.actual].values.push({
+                user: user,
+                value: $scope.selectedCard.display
+            });
+            vm.game.ustories = $scope.ustories;
+            vm.game.$update();
+        }
 
-    init();
+        init();
 
-    function init() {
+        function init() {
 
-    for (var i = 0; i < $scope.ustories.length ; i++) {
-      $scope.ustories[i].values= [];
+            for (var i = 0; i < $scope.ustories.length; i++) {
+                $scope.ustories[i].values = [];
+            }
+        }
     }
-    }
-  }
 })();
 
 //Games service used to communicate Games REST endpoints

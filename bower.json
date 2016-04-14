@@ -4,19 +4,32 @@
   "homepage": "http://meanjs.org/",
   "license": "MIT",
   "dependencies": {
-    "bootstrap": "~3",
-    "angular": "~1.3",
-    "angular-resource": "~1.3",
-    "angular-animate": "~1.3",
-    "angular-mocks": "~1.3",
-    "angular-bootstrap": "~0.13",
+    "bootstrap": "latest",
+    "angular": "latest",
+    "angular-resource": "latest",
+    "angular-animate": "latest",
+    "angular-mocks": "latest",
+    "angular-bootstrap": "latest",
     "angular-ui-utils": "bower",
-    "angular-ui-router": "~0.2",
-    "angular-file-upload": "1.1.5",
-    "angular-messages": "~1.3.17",
-    "owasp-password-strength-test": "~1.3.0"
+    "angular-ui-router": "latest",
+    "angular-file-upload": "latest",
+    "angular-messages": "latest",
+    "owasp-password-strength-test": "latest",
+    "angular-material": "latest"
   },
   "resolutions": {
-    "angular": "~1.3"
-  }
+    "angular": "latest"
+  },
+  "authors": [
+    "Jorge Pérez Berrio <jorge.xuko@gmail.com>"
+  ],
+  "main": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
