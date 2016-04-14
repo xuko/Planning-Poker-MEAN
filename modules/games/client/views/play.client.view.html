@@ -1,10 +1,10 @@
 <section>
-<br>
-<br>
-  <h2>Game for <span data-ng-bind="vm.game.name"></span></h2>
+    <br>
+    <br>
+    <h2>Game for <span data-ng-bind="vm.game.name"></span></h2>
 
-  <h3>User Story: <span data-ng-bind="vm.game.ustories[actual].name"></h3>
-  <p>Description: <span data-ng-bind="vm.game.ustories[actual].description"></p>
+    <h3>User Story: <span data-ng-bind="vm.game.ustories[actual].name"></h3>
+    <p>Description: <span data-ng-bind="vm.game.ustories[actual].description"></p>
 
 <div layout="row" layout-padding layout-wrap layout-fill>
 
@@ -19,4 +19,4 @@
           <md-button class="md-raised md-accent" ng-show="ustories[actual+1]==ustories.lenght" ng-disabled="!selectedCard" ng-click="finish()" ui-sref="games.view({ gameId: vm.game._id })">Finish</md-button>
         </div>
 
- </section>
+</section>

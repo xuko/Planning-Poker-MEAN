@@ -1,5 +1,5 @@
-(function (app) {
-  'use strict';
+(function(app) {
+    'use strict';
 
-  app.registerModule('games');
+    app.registerModule('games');
 })(ApplicationConfiguration);
