@@ -31,13 +31,13 @@
 
 
         var v = 0;
-        for (var i = vm.game.ustories.length - 1; i >= 0; i--) {
-            for (var j = vm.game.ustories[i].values.length - 1; j >= 0; j--) {
-                v += parseInt(vm.game.ustories[i].values[j].value);
-            }
-            vm.game.ustories[i].score = v / vm.game.ustories[i].values.length;
-            v = 0;
-        }
+        // for (var i = vm.game.ustories.length - 1; i >= 0; i--) {
+        //     for (var j = vm.game.ustories[i].values.length - 1; j >= 0; j--) {
+        //         v += parseInt(vm.game.ustories[i].values[j].value);
+        //     }
+        //     vm.game.ustories[i].score = v / vm.game.ustories[i].values.length;
+        //     v = 0;
+        // }
 
 
         /**

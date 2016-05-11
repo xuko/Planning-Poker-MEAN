@@ -41,9 +41,9 @@ var GameSchema = new Schema({
                     type: Schema.ObjectId,
                     ref: 'User'
                 },
-                score: String
+                value: Number
             }],
-            score: String
+            score: Number
         }],
         default: [],
         ref: 'Ustory'
